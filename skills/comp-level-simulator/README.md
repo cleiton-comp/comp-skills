@@ -1,66 +1,62 @@
 # comp-level-simulator
 
-Free Claude skill for HR & People leaders. Generates a self-contained interactive HTML simulator for evaluating job levels (L1–L6) using the Comp methodology — 4 pillars (Influence, Autonomy, Complexity, Responsibility), 8 questions, A–E scale.
+Skill gratuito do Claude para líderes de RH & People. Gera um simulador HTML interativo e auto-contido para avaliar níveis de cargo (L1–L6) usando a metodologia Comp — 4 pilares (Influência, Autonomia, Complexidade, Responsabilidade), 8 perguntas, escala A–E.
 
-Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-comp-level-simulator)).
+Mantido pela **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-comp-level-simulator)).
 
-## What it does
+## O que faz
 
-Generates one HTML file per run. Open it in any browser — it walks you (or whoever you share it with) through 8 questions and outputs a calibrated job level. The file is self-contained: no backend, no data sent anywhere, works offline once generated.
+Gera um arquivo HTML por execução. Abra em qualquer navegador — ele te guia (ou quem você compartilhar) por 8 perguntas e devolve um nível calibrado. O arquivo é auto-contido: sem backend, sem dados enviados pra fora, funciona offline depois de gerado.
 
-Use it to:
-- Standardize leveling decisions across the org
-- Hand managers a self-service tool to grade new positions
-- Remove bias (salary, title, tenure) from level conversations
-- Validate an HR/talent leveling proposal before publishing
+Use para:
+- Padronizar decisões de leveling no time todo
+- Entregar aos gestores uma ferramenta self-service pra avaliar novas posições
+- Remover viés (salário, título, tempo de casa) das conversas de nível
+- Validar uma proposta de leveling de RH/Talent antes de publicar
 
-## Install
+## Instalação
 
-### Marketplace (all 4 Comp skills)
 ```bash
 /plugin marketplace add cleiton-comp/comp-skills
 /plugin install comp-skills@comp
 ```
 
-This installs the whole `comp-skills` plugin (4 skills, one of which is this one).
+Instala o plugin `comp-skills` inteiro (4 skills, um dos quais é este).
 
-### Manual (zip)
-Download the `.zip` from our LP, then drop the unzipped folder in your `~/.claude/skills/` directory.
+## Uso
 
-## Usage
-
-Just talk to Claude. Examples:
+Basta falar com o Claude. Exemplos:
 
 - "Gera um simulador de nível pra eu mandar pros gestores"
 - "Quero avaliar o nível dessa nova posição de Eng Manager"
 - "Como nivelar uma posição? Tem uma ferramenta?"
 - "Padroniza a avaliação de level aqui na empresa"
 
-Claude generates a `Comp-Level-Simulator-{timestamp}.html` in your current directory. Open in a browser, share via Drive/email, or host anywhere.
+O Claude gera um `Comp-Level-Simulator-{timestamp}.html` no diretório atual. Abre no navegador, compartilha via Drive/email ou hospeda onde quiser.
 
-## Methodology
+## Metodologia
 
-| Pillar | Questions | Score per Q (A→E) |
+| Pilar | Perguntas | Score por pergunta (A→E) |
 |---|---|---|
-| Influence | 2 | 5, 4, 3, 2, 1 |
-| Autonomy | 2 | 5, 4, 3, 2, 1 |
-| Complexity | 2 | 5, 4, 3, 2, 1 |
-| Responsibility | 2 | 5, 4, 3, 2, 1 |
+| Influência | 2 | 5, 4, 3, 2, 1 |
+| Autonomia | 2 | 5, 4, 3, 2, 1 |
+| Complexidade | 2 | 5, 4, 3, 2, 1 |
+| Responsabilidade | 2 | 5, 4, 3, 2, 1 |
 
-Total: 8–40. Maps to L1 (Junior) → L6 (Senior Specialist / Senior Manager). L5–L6 are compressed at the top — reaching executive levels requires consistently high scores across all pillars.
+Total: 8–40. Mapeia para L1 (Júnior) → L6 (Especialista Sênior / Gerente Sênior). L5–L6 ficam comprimidos no topo — chegar a níveis executivos exige scores consistentemente altos em todos os pilares.
 
-## What gets shared with Comp
+## O que é compartilhado com a Comp
 
-On first run you'll be prompted for:
-1. Your email (optional) — only used to notify you of skill updates.
-2. Anonymous telemetry (default: off) — if enabled, sends skill name + timestamp on each run. **Never sends your inputs or the HTML you generate.**
+Na primeira execução você será perguntado sobre:
+1. Seu email (opcional) — usado apenas para notificar atualizações do skill.
+2. Telemetria anônima (default: off) — se ativada, envia nome do skill + timestamp por execução. **Nunca envia seus inputs nem o HTML que você gera.**
 
-The HTML itself **never** phones home — it's pure client-side JS. Everything you fill in stays in the browser.
+O HTML em si **nunca** chama o servidor — é JS puro client-side. Tudo que você preenche fica no navegador.
 
-Both opt-ins are stored locally in `~/.comp-skills/config.json`. Edit or delete that file any time to revoke.
+Ambos os opt-ins ficam em `~/.comp-skills/config.json` localmente. Edite ou apague o arquivo a qualquer momento para revogar.
 
 ## Issues
 
-Open an issue at [cleiton-comp/comp-skills](https://github.com/cleiton-comp/comp-skills/issues) with the `eam` label.
+Abra uma issue em [cleiton-comp/comp-skills](https://github.com/cleiton-comp/comp-skills/issues) com a label `eam`.
 
 — Powered by Comp · Free skills for HR & People leaders.

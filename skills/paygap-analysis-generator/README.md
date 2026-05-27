@@ -1,82 +1,79 @@
 # paygap-analysis-generator
 
-Free Claude skill for HR & People leaders. Generates a gender pay-gap HTML report from any roster (CSV or Excel) — medians, weighted ratios per area, global ratio, with the standard ≥3-per-gender confidentiality rule.
+Skill gratuito do Claude para líderes de RH & People. Gera um relatório HTML de pay gap de gênero a partir de qualquer roster (CSV ou Excel) — medianas, razões ponderadas por área, razão global, com a regra padrão de confidencialidade (≥3 por gênero).
 
-Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-paygap-analysis-generator)).
+Mantido pela **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-paygap-analysis-generator)).
 
-## What it does
+## O que faz
 
-You give it a roster file. It gives you a self-contained HTML report showing:
-- Global weighted pay ratio (women's median / men's median, %)
-- Per-area breakdown with group-level detail (area × level)
-- Confidentiality-protected (groups with <3 per gender are flagged, not computed)
-- Methodology and warnings explained inline
+Você dá um arquivo de roster. Ele devolve um relatório HTML auto-contido mostrando:
+- Razão ponderada global de gênero (mediana feminina / mediana masculina, %)
+- Breakdown por área com detalhe por grupo (área × nível)
+- Protegido por confidencialidade (grupos com <3 por gênero são sinalizados, não calculados)
+- Metodologia e avisos explicados inline
 
-Built for HR/People leaders running pay-equity reviews, regulatory reporting prep, or pre-comp-cycle diagnostics.
+Feito para líderes de RH/People rodando revisões de equidade salarial, preparação de reporting regulatório ou diagnósticos pré-ciclo de remuneração.
 
-## Install
+## Instalação
 
-### Marketplace (all 4 Comp skills)
 ```bash
 /plugin marketplace add cleiton-comp/comp-skills
 /plugin install comp-skills@comp
 ```
 
-This installs the whole `comp-skills` plugin (4 skills, one of which is this one).
+Instala o plugin `comp-skills` inteiro (4 skills, um dos quais é este).
 
-### Manual (zip)
-Download the `.zip` from our LP, then drop the unzipped folder in your `~/.claude/skills/` directory.
+### Suporte a Excel
 
-### Excel support
-The skill processes CSV out of the box. For `.xlsx` input, install `openpyxl`:
+O skill processa CSV out-of-the-box. Para input `.xlsx`, instale o `openpyxl`:
 ```bash
 pip install openpyxl
 ```
 
-## Required columns
+## Colunas obrigatórias
 
-Your file must have at least 5 logical columns. **Column names can vary** — the skill auto-detects common aliases in PT and EN.
+Seu arquivo precisa ter no mínimo 5 colunas lógicas. **Os nomes das colunas podem variar** — o skill auto-detecta aliases comuns em PT e EN.
 
-| Logical column | Examples that work |
+| Coluna lógica | Exemplos que funcionam |
 |---|---|
-| Name | `name`, `nome`, `colaborador`, `employee` |
-| Gender | `gender`, `genero`, `gênero`, `sexo` |
-| Salary | `salary`, `salario`, `salário`, `salario_base`, `gross_salary` |
-| Level | `level`, `nivel`, `nível`, `senioridade`, `grade` |
-| Area | `area`, `área`, `departamento`, `função`, `business_unit` |
+| Nome | `name`, `nome`, `colaborador`, `employee` |
+| Gênero | `gender`, `genero`, `gênero`, `sexo` |
+| Salário | `salary`, `salario`, `salário`, `salario_base`, `gross_salary` |
+| Nível | `level`, `nivel`, `nível`, `senioridade`, `grade` |
+| Área | `area`, `área`, `departamento`, `função`, `business_unit` |
 
-If your column names are unusual, Claude will ask which is which.
+Se seus nomes de coluna forem incomuns, o Claude pergunta qual é qual.
 
-## Usage
+## Uso
 
-Just talk to Claude. Examples:
+Basta falar com o Claude. Exemplos:
 
 - "Roda uma análise de pay gap dessa planilha aqui"
 - "Gera o relatório de equidade salarial pra eu mandar pro CHRO"
 - "Quero ver o gender pay gap da nossa empresa"
 - "Diagnóstico de gap salarial por área"
 
-Output: `paygap-{timestamp}.html` in your current directory. Open in any browser.
+Output: `paygap-{timestamp}.html` no diretório atual. Abre em qualquer navegador.
 
-## Methodology
+## Metodologia
 
-- **Medians (not means)** — robust to salary outliers
-- **Weighted ratio per area** = Σ(ratio × group_hc) ÷ Σ(group_hc), over valid groups only
-- **Global weighted ratio** = weighted average of area ratios by area headcount
-- **Confidentiality**: groups (area × level) with fewer than **3 of each gender** are excluded from weighted calculations — shown as "—" in the report, headcounts still visible
+- **Medianas (não médias)** — robusto a outliers salariais
+- **Razão ponderada por área** = Σ(razão × hc do grupo) ÷ Σ(hc do grupo), apenas sobre grupos válidos
+- **Razão ponderada global** = média ponderada das razões por área pelo headcount da área
+- **Confidencialidade**: grupos (área × nível) com menos de **3 pessoas de cada gênero** são excluídos dos cálculos ponderados — aparecem como "—" no relatório, headcounts continuam visíveis
 
-## What gets shared with Comp
+## O que é compartilhado com a Comp
 
-On first run you'll be prompted for:
-1. Your email (optional) — only used to notify you of skill updates.
-2. Anonymous telemetry (default: off) — if enabled, sends skill name + timestamp on each run. **Never sends your roster data, salary values, or the report.**
+Na primeira execução você será perguntado sobre:
+1. Seu email (opcional) — usado apenas para notificar atualizações do skill.
+2. Telemetria anônima (default: off) — se ativada, envia nome do skill + timestamp por execução. **Nunca envia seus dados de roster, valores salariais nem o relatório.**
 
-100% local processing. Salary data never leaves your machine. The HTML output is also local — share it with whom you want.
+100% processamento local. Dados salariais nunca saem da sua máquina. O HTML de saída também é local — compartilha com quem você quiser.
 
-Both opt-ins are stored locally in `~/.comp-skills/config.json`. Edit or delete that file any time to revoke.
+Ambos os opt-ins ficam em `~/.comp-skills/config.json` localmente. Edite ou apague o arquivo a qualquer momento para revogar.
 
 ## Issues
 
-Open an issue at [cleiton-comp/comp-skills](https://github.com/cleiton-comp/comp-skills/issues) with the `eam` label.
+Abra uma issue em [cleiton-comp/comp-skills](https://github.com/cleiton-comp/comp-skills/issues) com a label `eam`.
 
 — Powered by Comp · Free skills for HR & People leaders.

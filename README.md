@@ -1,53 +1,47 @@
 # Comp Skills
 
-Free Claude skills for HR & People leaders, built and maintained by [Comp](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-intro).
+Skills gratuitos do Claude para líderes de RH & People, criados e mantidos pela [Comp](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-intro).
 
-## What's here
+## O que tem aqui
 
-| Skill | What it does |
+| Skill | O que faz |
 |---|---|
-| [pj-vs-clt-calculator](skills/pj-vs-clt-calculator/) | Brazilian CLT ↔ PJ salary equivalence with full tax accuracy (INSS, IRPF, FGTS, 13th, vacation, benefits). Single or batch CSV. |
-| [comp-level-simulator](skills/comp-level-simulator/) | Self-contained interactive HTML simulator for evaluating job levels using a 4-pillar methodology. |
-| [paygap-analysis-generator](skills/paygap-analysis-generator/) | Gender pay-gap HTML report from any HR roster (CSV/XLSX). Confidentiality-protected (≥3 per gender). |
-| [research-digest](skills/research-digest/) | Rolling 12-week digest of papers on Org Design, Workforce Planning, and AI impact on the workforce — translated to PT-BR. |
+| [pj-vs-clt-calculator](skills/pj-vs-clt-calculator/) | Equivalência salarial CLT ↔ PJ com cálculo fiscal completo (INSS, IRPF, FGTS, 13º, férias, benefícios). Single ou batch via CSV. |
+| [comp-level-simulator](skills/comp-level-simulator/) | Simulador HTML interativo e auto-contido para avaliar níveis de cargo usando metodologia de 4 pilares. |
+| [paygap-analysis-generator](skills/paygap-analysis-generator/) | Relatório HTML de pay gap de gênero a partir de qualquer roster de RH (CSV/XLSX). Com regra de confidencialidade (≥3 por gênero). |
+| [research-digest](skills/research-digest/) | Digest rolling de 12 semanas de papers sobre Org Design, Workforce Planning e impacto da IA na força de trabalho — traduzido pra PT-BR. |
 
-## Install
-
-### Recommended: marketplace install (all 4 skills at once)
+## Instalação
 
 ```bash
 /plugin marketplace add cleiton-comp/comp-skills
 /plugin install comp-skills@comp
 ```
 
-This installs all 4 skills. They're model-invoked — just describe what you want and Claude picks the right one (e.g., "analyze pay gap" → `paygap-analysis-generator`).
+Instala os 4 skills. Eles são model-invoked — basta descrever o que você quer e o Claude escolhe o skill certo (ex: "analisa o pay gap dessa planilha" → `paygap-analysis-generator`).
 
-After install, run `/reload-plugins` to activate.
+Depois de instalar, rode `/reload-plugins` pra ativar.
 
-### Single skill via .zip (LP download)
+## Privacidade
 
-If you want only one skill, download its `.zip` from our landing page at [tools.comp.vc](https://tools.comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-lp-link) (it captures your email so we can notify you of updates) and drop the unzipped folder in your `~/.claude/skills/` directory. Skills installed this way run standalone (no namespace).
+Esses skills rodam **localmente** no seu Claude. Dados de salário, rosters e qualquer análise ficam na sua máquina — nada disso é enviado pra fora.
 
-## Privacy
+Na primeira execução, cada skill pergunta uma única vez se você quer:
+1. **Atualizações por email** (opcional) — apenas para notificar melhorias dos skills.
+2. **Telemetria anônima de uso** (default: **off**) — se ativada, envia apenas o nome do skill + timestamp por execução. **Nunca** seus inputs, outputs ou dados de roster.
 
-These skills run **locally** in your Claude. Salary data, rosters, and any analysis stay on your machine — none of it phones home.
+Ambos os opt-ins ficam em `~/.comp-skills/config.json`. Apague o arquivo a qualquer momento para revogar.
 
-On first run, each skill asks once whether you want:
-1. **Updates by email** (optional) — only to notify you of skill improvements.
-2. **Anonymous usage telemetry** (default: **off**) — if enabled, sends only the skill name + timestamp per run. Never your inputs, outputs, or roster data.
+## Issues e feedback
 
-Both opt-ins are stored in `~/.comp-skills/config.json`. Delete that file any time to revoke.
+Abra uma [issue](https://github.com/cleiton-comp/comp-skills/issues) — lemos todas.
 
-## Issues & feedback
+## Licença
 
-Open an [issue](https://github.com/cleiton-comp/comp-skills/issues) — we read all of them.
+[MIT](LICENSE) — livre para usar, forkar e redistribuir. Atribuição apreciada.
 
-## License
+## Sobre a Comp
 
-[MIT](LICENSE) — free to use, fork, redistribute. Attribution appreciated.
-
-## About Comp
-
-Comp is an AI-native HR service for fast-growing companies. We embed HR executives and AI engineers in our customer teams. These skills are a small slice of what we build internally — released free because better HR tooling is good for everyone.
+A Comp é um serviço de RH AI-native para empresas em crescimento rápido. Embarcamos executivos de RH e engenheiros de IA nos times dos nossos clientes. Esses skills são uma pequena fatia do que construímos internamente — liberados gratuitamente porque ferramentas de RH melhores são boas pra todo mundo.
 
 [comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-footer)

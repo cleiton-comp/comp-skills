@@ -1,47 +1,43 @@
 # research-digest
 
-Free Claude skill for HR & People leaders. Curates a rolling 12-week digest of high-signal papers and publications on **Org Design**, **Workforce Planning**, and **AI impact on the workforce** — translated to PT-BR with executive summaries and key takeaways. Single HTML output, self-contained, share via Drive/email/static hosting.
+Skill gratuito do Claude para líderes de RH & People. Cura um digest rolling de 12 semanas de papers e publicações de alto sinal sobre **Org Design**, **Workforce Planning** e **impacto da IA na força de trabalho** — traduzido pra PT-BR com sumários executivos e key takeaways. Output HTML único, auto-contido, compartilhe via Drive/email/hosting estático.
 
-Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-research-digest)).
+Mantido pela **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-research-digest)).
 
-## What it does
+## O que faz
 
-Each time you run it:
-1. Pulls the latest 12 weeks of papers/reports from academic (OpenAlex, arXiv) and practice (consultancy + thought leader) sources
-2. Translates titles, abstracts, and key takeaways to PT-BR
-3. Renders an executive HTML digest grouped by theme
+Cada vez que você roda:
+1. Puxa as últimas 12 semanas de papers/reports de fontes acadêmicas (OpenAlex, arXiv) e de prática (consultorias + thought leaders)
+2. Traduz títulos, abstracts e key takeaways pra PT-BR
+3. Renderiza um digest HTML executivo agrupado por tema
 
-Built for HR/People leaders who want to stay on the frontier without drowning in literature.
+Feito para líderes de RH/People que querem ficar na fronteira sem se afogar em literatura.
 
-## Install
+## Instalação
 
-### Marketplace (all 4 Comp skills)
 ```bash
 /plugin marketplace add cleiton-comp/comp-skills
 /plugin install comp-skills@comp
 ```
 
-This installs the whole `comp-skills` plugin (4 skills, one of which is this one).
+Instala o plugin `comp-skills` inteiro (4 skills, um dos quais é este).
 
-### Manual (zip)
-Download the `.zip` from our LP, then drop the unzipped folder in your `~/.claude/skills/` directory.
+## Uso
 
-## Usage
-
-Just talk to Claude. Examples:
+Basta falar com o Claude. Exemplos:
 
 - "Gera meu radar de papers dessa janela"
 - "Quero ver as novidades em org design das últimas semanas"
 - "Atualização de pesquisa sobre IA no trabalho"
 - "Research review pra eu mandar pro CEO"
 
-Claude orchestrates the 3 steps (fetch → translate → render) and gives you a `research-digest-YYYY-MM-DD.html` in your current directory.
+O Claude orquestra os 3 passos (fetch → traduz → renderiza) e devolve um `research-digest-YYYY-MM-DD.html` no diretório atual.
 
-## Scheduling (power users)
+## Agendamento (power users)
 
-The skill is on-demand by default. To run it on a cadence, schedule it via:
+O skill é on-demand por default. Para rodar em cadência, agende via:
 
-**Claude Code** (if you use it):
+**Claude Code** (se você usa):
 ```
 /schedule weekly "rode meu research-digest"
 ```
@@ -51,27 +47,27 @@ The skill is on-demand by default. To run it on a cadence, schedule it via:
 0 9 * * MON cd ~/projects/my-research && claude "rode o research-digest"
 ```
 
-Cadence sweet spot: **monthly** (matches the rolling 12-week window — fresh material guaranteed).
+Cadência sweet spot: **mensal** (combina com a janela rolling de 12 semanas — material novo garantido).
 
-## What gets shared with Comp
+## O que é compartilhado com a Comp
 
-On first run you'll be prompted for:
-1. Your email (optional) — only used to notify you of skill updates.
-2. Anonymous telemetry (default: off) — if enabled, sends skill name + timestamp on each run. **Never sends the digest content, sources, or your query inputs.**
+Na primeira execução você será perguntado sobre:
+1. Seu email (opcional) — usado apenas para notificar atualizações do skill.
+2. Telemetria anônima (default: off) — se ativada, envia nome do skill + timestamp por execução. **Nunca envia o conteúdo do digest, as fontes nem seus inputs.**
 
-The HTML output stays 100% on your machine. The skill fetches from public research APIs (OpenAlex, arXiv) — no credentials, no tracking.
+O HTML de saída fica 100% na sua máquina. O skill busca de APIs públicas de pesquisa (OpenAlex, arXiv) — sem credenciais, sem tracking.
 
-Both opt-ins are stored locally in `~/.comp-skills/config.json`. Edit or delete that file any time to revoke.
+Ambos os opt-ins ficam em `~/.comp-skills/config.json` localmente. Edite ou apague o arquivo a qualquer momento para revogar.
 
-## Source coverage
+## Cobertura de fontes
 
-- **Academic**: OpenAlex, arXiv (works through OpenAlex)
-- **Practice**: top consultancies (McKinsey, BCG, Bain, Deloitte, Mercer, WTW, Korn Ferry) + thought leaders (Josh Bersin, Galloway, etc.) via RSS
+- **Acadêmico**: OpenAlex, arXiv (funciona através do OpenAlex)
+- **Prática**: top consultorias (McKinsey, BCG, Bain, Deloitte, Mercer, WTW, Korn Ferry) + thought leaders (Josh Bersin, Galloway, etc.) via RSS
 
-Full catalog: `references/sources.md`.
+Catálogo completo: `references/sources.md`.
 
 ## Issues
 
-Open an issue at [cleiton-comp/comp-skills](https://github.com/cleiton-comp/comp-skills/issues) with the `eam` label.
+Abra uma issue em [cleiton-comp/comp-skills](https://github.com/cleiton-comp/comp-skills/issues) com a label `eam`.
 
 — Powered by Comp · Free skills for HR & People leaders.
