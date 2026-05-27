@@ -1,0 +1,24 @@
+{
+  "name": "comp-skills",
+  "description": "Free Claude skills for HR & People leaders — built and maintained by Comp. Includes pj-vs-clt-calculator, comp-level-simulator, paygap-analysis-generator, and research-digest.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Comp",
+    "url": "https://comp.vc"
+  },
+  "homepage": "https://comp.vc",
+  "repository": "https://github.com/cleiton-comp/comp-skills",
+  "license": "MIT",
+  "keywords": [
+    "hr",
+    "people-analytics",
+    "compensation",
+    "pay-equity",
+    "brazil",
+    "clt",
+    "pj",
+    "salary",
+    "leveling",
+    "workforce"
+  ]
+}
