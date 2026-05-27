@@ -2,7 +2,7 @@
 
 Free Claude skill for HR & People leaders. Curates a rolling 12-week digest of high-signal papers and publications on **Org Design**, **Workforce Planning**, and **AI impact on the workforce** — translated to PT-BR with executive summaries and key takeaways. Single HTML output, self-contained, share via Drive/email/static hosting.
 
-Maintained by **Comp** ([comp.vc](https://comp.vc)).
+Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-research-digest)).
 
 ## What it does
 

@@ -2,7 +2,7 @@
 
 Free Claude skill for HR & People leaders. Generates a gender pay-gap HTML report from any roster (CSV or Excel) — medians, weighted ratios per area, global ratio, with the standard ≥3-per-gender confidentiality rule.
 
-Maintained by **Comp** ([comp.vc](https://comp.vc)).
+Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-paygap-analysis-generator)).
 
 ## What it does
 

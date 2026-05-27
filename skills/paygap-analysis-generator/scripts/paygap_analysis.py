@@ -392,7 +392,7 @@ def main() -> int:
         except Exception:
             pass
 
-    print("\n— Powered by Comp (comp.vc) · Free skills for HR & People leaders.")
+    print("\n— Powered by Comp · Free skills for HR & People leaders · https://comp.vc?utm_source=skill-output&utm_medium=cli-footer&utm_campaign=eam&utm_content=paygap-analysis-generator")
     return 0
 
 

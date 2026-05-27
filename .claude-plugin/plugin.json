@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "author": {
     "name": "Comp",
-    "url": "https://comp.vc"
+    "url": "https://comp.vc?utm_source=claude-marketplace&utm_medium=plugin-manifest&utm_campaign=eam&utm_content=plugin-author-url"
   },
-  "homepage": "https://comp.vc",
+  "homepage": "https://comp.vc?utm_source=claude-marketplace&utm_medium=plugin-manifest&utm_campaign=eam&utm_content=plugin-homepage",
   "repository": "https://github.com/cleiton-comp/comp-skills",
   "license": "MIT",
   "keywords": [

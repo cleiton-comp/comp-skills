@@ -2,7 +2,7 @@
 
 Free Claude skill for HR & People leaders. Generates a self-contained interactive HTML simulator for evaluating job levels (L1–L6) using the Comp methodology — 4 pillars (Influence, Autonomy, Complexity, Responsibility), 8 questions, A–E scale.
 
-Maintained by **Comp** ([comp.vc](https://comp.vc)).
+Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-comp-level-simulator)).
 
 ## What it does
 

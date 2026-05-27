@@ -1,6 +1,6 @@
 # Comp Skills
 
-Free Claude skills for HR & People leaders, built and maintained by [Comp](https://comp.vc).
+Free Claude skills for HR & People leaders, built and maintained by [Comp](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-intro).
 
 ## What's here
 
@@ -26,7 +26,7 @@ After install, run `/reload-plugins` to activate.
 
 ### Single skill via .zip (LP download)
 
-If you want only one skill, download its `.zip` from our landing page at [tools.comp.vc](https://tools.comp.vc) (it captures your email so we can notify you of updates) and drop the unzipped folder in your `~/.claude/skills/` directory. Skills installed this way run standalone (no namespace).
+If you want only one skill, download its `.zip` from our landing page at [tools.comp.vc](https://tools.comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-lp-link) (it captures your email so we can notify you of updates) and drop the unzipped folder in your `~/.claude/skills/` directory. Skills installed this way run standalone (no namespace).
 
 ## Privacy
 
@@ -50,4 +50,4 @@ Open an [issue](https://github.com/cleiton-comp/comp-skills/issues) — we read 
 
 Comp is an AI-native HR service for fast-growing companies. We embed HR executives and AI engineers in our customer teams. These skills are a small slice of what we build internally — released free because better HR tooling is good for everyone.
 
-[comp.vc](https://comp.vc)
+[comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-footer)

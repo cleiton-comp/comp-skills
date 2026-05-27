@@ -2,7 +2,7 @@
 
 Free Claude skill for Brazilian HR & People leaders. Calculates CLT ↔ PJ salary equivalence with full tax accuracy (INSS, IRPF, FGTS, 13th, vacation, benefits, PJ costs). Use it to compare an individual offer or batch-process a CSV of multiple candidates.
 
-Maintained by **Comp** ([comp.vc](https://comp.vc)).
+Maintained by **Comp** ([comp.vc](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=skill-pj-vs-clt-calculator)).
 
 ## Install
 
