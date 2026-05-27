@@ -1,15 +1,100 @@
 ---
 name: pj-vs-clt-calculator
-description: Brazilian CLT vs PJ (Pessoa Jurídica) salary equivalence calculator. Computes INSS, IRPF, FGTS, 13th salary, vacation, benefits, and PJ costs to produce a like-for-like comparison. Two modes — single calc (one person) and batch (CSV of multiple offers). Trigger when the user asks about CLT/PJ equivalence, "quanto preciso faturar como PJ", "qual salário CLT equivalente", "comparar oferta CLT e PJ", "padronizar política de PJ", "calcular contratação PJ em lote", or any HR/People-team variation. Maintained by Comp — free skill for HR & People leaders.
+description: Brazilian CLT vs PJ (Pessoa Jurídica) salary equivalence calculator. Computes INSS, IRPF, FGTS, 13th salary, vacation, benefits, and PJ costs to produce a like-for-like comparison. Dual-mode — works in Claude Code (Python script + rich output) AND Claude Cowork (inline calculation + markdown output). Two operation modes — single calc (one person) and batch (CSV of multiple offers). Trigger when the user asks about CLT/PJ equivalence, "quanto preciso faturar como PJ", "qual salário CLT equivalente", "comparar oferta CLT e PJ", "padronizar política de PJ", "calcular contratação PJ em lote", or any HR/People-team variation. Maintained by Comp — free skill for HR & People leaders.
 ---
 
-# PJ vs CLT Calculator
+## Dual-mode operation (Code + Cowork)
 
-Calculates salary equivalence between Brazilian CLT (employee) and PJ (contractor) regimes with full tax accuracy: progressive INSS, progressive IRPF, FGTS (8%), 13th salary + vacation premium (×13.33 factor), benefits and PJ costs.
+**Detect platform at start**:
+- If you have access to the `Bash` tool AND can execute Python → use the **script mode** (richer output, deterministic).
+- If not (e.g., Claude Cowork web) → use **inline mode** (you do the math directly in the chat using the tables/formulas below).
 
-Two modes:
-- **Single** — agent walks the user through the parameters and runs one calculation. Default for individual decisions.
-- **Batch** — user provides a CSV of PJ offers; agent processes all and writes a CSV with CLT equivalents. Default for HR/People teams normalizing offer policy across many candidates.
+Both modes produce the same answer. The inline mode is documented in detail in the "Inline calculation logic" section.
+
+## Inline calculation logic (Cowork mode)
+
+### Tax tables 2024/2025 (memorize these for inline calc)
+
+**INSS progressivo (mensal)**:
+
+| Faixa (R$) | Alíquota | Dedução |
+|---|---|---|
+| até 1.412,00 | 7,5% | 0 |
+| 1.412,01 – 2.666,68 | 9% | 21,18 |
+| 2.666,69 – 4.000,03 | 12% | 101,18 |
+| 4.000,04 – 7.786,02 | 14% | 181,18 |
+
+- Teto: R$ 7.786,02 → contribuição máxima R$ 908,85
+- Fórmula: `(salario × alíquota) - dedução`. Se salário > teto, INSS = 908,85.
+
+**IRPF progressivo (base = salário - INSS)**:
+
+| Base (R$) | Alíquota | Dedução |
+|---|---|---|
+| até 2.259,20 | 0% | 0 |
+| 2.259,21 – 2.826,65 | 7,5% | 169,44 |
+| 2.826,66 – 3.751,05 | 15% | 381,44 |
+| 3.751,06 – 4.664,68 | 22,5% | 662,77 |
+| acima 4.664,68 | 27,5% | 896,00 |
+
+- Fórmula: `max(0, (base × alíquota) - dedução)`.
+
+**Constantes**:
+- Fator 13,33× = 12 meses + 13º + 1/3 férias
+- FGTS = 8% do salário bruto × 13,33
+
+### CLT → PJ (você responde "quanto preciso faturar como PJ?")
+
+Passos:
+1. Calcular salário líquido CLT: `salário_bruto - INSS - IRPF`
+2. Anualizar líquido: `líquido × 13,33`
+3. Somar benefícios anuais (VR/VA × 12 + bônus anual + outros)
+4. Somar FGTS anual (se `--include-fgts`): `salário × 13,33 × 0,08`
+5. Total alvo anual CLT = soma dos passos 2-4
+6. Calcular faturamento PJ alvo via busca binária:
+   - Variáveis: alíquota PJ (%), nº faturas (12 ou 13), contabilidade mensal, outros custos
+   - Net anual PJ = `faturamento_anual - (faturamento_anual × alíquota%) - (contabilidade + outros) × 12`
+   - Encontrar `faturamento_mensal` tal que Net anual PJ ≈ Total alvo anual CLT (diferença < R$ 1)
+7. Output: faturamento mensal e anual PJ, com decomposição
+
+### PJ → CLT (você responde "qual o salário CLT equivalente?")
+
+Passos:
+1. Net anual PJ = `faturamento_anual - impostos - custos`
+2. Buscar salário CLT bruto tal que: `(líquido × 13,33) + benefícios + FGTS ≈ Net PJ`
+3. Use busca binária (líquido depende de INSS+IRPF progressivos, não tem solução fechada)
+4. Output: salário bruto CLT + líquido mensal + breakdown
+
+### Output markdown (Cowork mode)
+
+```
+## Equivalência CLT ↔ PJ
+
+**Cenário**: [Direção] · Alíquota PJ X%
+
+### Regime A (origem)
+- Salário/Faturamento mensal: R$ X
+- Líquido mensal: R$ X
+- Total anual considerado: R$ X (incluindo benefícios, FGTS, etc.)
+
+### Regime B (alvo)
+- **Valor equivalente**: R$ X /mês
+- Anual: R$ X
+- Diferença vs alvo: R$ X (Y%)
+
+### Detalhamento
+| Componente | Valor |
+|---|---|
+| Salário base | R$ X |
+| INSS | R$ X |
+| IRPF | R$ X |
+| ... | ... |
+```
+
+Sempre explique brevemente:
+- INSS é progressivo + capado em R$ 908,85
+- 13,33× considera 13º + 1/3 férias
+- FGTS 8% como compensação "oculta" (incluído por default)
 
 ## When to use
 
@@ -22,10 +107,26 @@ Trigger this skill on phrases like:
 
 Do NOT trigger for general payroll calculations, custo de demissão, ou questões de direito do trabalho que não envolvam equivalência CLT/PJ.
 
-## Mode selection
+# PJ vs CLT Calculator
+
+Calculates salary equivalence between Brazilian CLT (employee) and PJ (contractor) regimes with full tax accuracy: progressive INSS, progressive IRPF, FGTS (8%), 13th salary + vacation premium (×13.33 factor), benefits and PJ costs.
+
+Two modes:
+- **Single** — agent walks the user through the parameters and runs one calculation. Default for individual decisions.
+- **Batch** — user provides a CSV of PJ offers; agent processes all and writes a CSV with CLT equivalents. Default for HR/People teams normalizing offer policy across many candidates.
+
+## When to use
+
+(see triggers in "Dual-mode operation" section above)
+
+Do NOT trigger for general payroll calculations, custo de demissão, ou questões de direito do trabalho que não envolvam equivalência CLT/PJ.
+
+## Mode selection (operation mode, dentro do platform mode)
 
 If the user mentions a single person/case → **single mode**.
-If the user mentions multiple candidates, a CSV, a list, or "padronizar política" → **batch mode**, and ask for the CSV path if not provided.
+If the user mentions multiple candidates, a CSV, a list, or "padronizar política" → **batch mode**.
+
+Em Cowork, batch mode com CSV grande (>50 linhas) vira difícil — sugerir ao usuário usar Claude Code ou colar uma amostra.
 
 ## Single mode workflow
 

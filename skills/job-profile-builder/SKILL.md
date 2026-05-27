@@ -1,0 +1,124 @@
+---
+name: job-profile-builder
+description: Conduz uma entrevista estruturada com o hiring manager (10-15 perguntas) e gera um Job Profile completo — Resumo executivo (por que agora, outcomes, deal-breakers), JD (sobre a vaga, responsabilidades, requisitos, nice-to-have, oferta), Scorecard de avaliação ponderado, e Roteiro de Entrevistas com perguntas por estágio e o que procurar. Output em HTML printable + Markdown editável. Trigger em "criar JD", "job description", "perfil da vaga", "abrir vaga de [cargo]", "entrevistar hiring manager", "job profile", "scorecard de entrevista". Mantida pela Comp.
+---
+
+# Job Profile Builder
+
+Skill conversacional que entrevista o hiring manager e produz um pacote completo de abertura de vaga: JD + scorecard + roteiro de entrevistas.
+
+## Quando usar
+
+Ativa em frases como:
+- "criar JD", "job description"
+- "perfil da vaga"
+- "abrir vaga de [cargo]"
+- "entrevistar hiring manager"
+- "job profile / scorecard de entrevista"
+- "ajuda a estruturar uma posição"
+
+NÃO ativa para: triagem de candidatos (usar `candidate-screening`); calibração de salário (usar `pj-vs-clt-calculator` ou skills de comp); onboarding de hire (usar `onboarding-kit-generator`).
+
+## Workflow
+
+**Step 1 — Entrevista estruturada com o hiring manager** (você conduz a conversa):
+
+Não pergunte tudo de uma vez. Faça em blocos:
+
+**Bloco 1: Contexto da posição (5 perguntas)**
+1. Qual a posição e o nível? (cargo + L1-L8 ou equivalente)
+2. Por que essa vaga agora? (substituição, crescimento, nova capability)
+3. A quem vai reportar e quem vai trabalhar com?
+4. Em que área/time fica?
+5. Modalidade (remoto, hybrid, presencial) e localização preferida?
+
+**Bloco 2: Outcomes esperados (3-4 perguntas)**
+6. O que essa pessoa precisa entregar nos primeiros 6 meses pra ser considerada um hire bem-sucedido?
+7. O que essa pessoa precisa SABER (hard skills) pra entregar isso?
+8. O que essa pessoa precisa SER (soft skills, comportamentos) pra entregar isso?
+
+**Bloco 3: Filtros e diferenciais (3 perguntas)**
+9. Deal-breakers (3-5 itens que automaticamente desqualificam)?
+10. Diferenciais que seriam bônus (nice to have)?
+11. Quem seria o candidato ideal — algum perfil/empresa específica que vem na cabeça?
+
+**Bloco 4: Processo (2-3 perguntas)**
+12. Quais estágios de entrevista vão existir?
+13. Quem entrevista em cada estágio?
+14. Quanto tempo tem pra contratar (urgência)?
+
+**Step 2 — Gerar o JSON estruturado**:
+
+```json
+{
+  "role_name": "Engineering Manager",
+  "level": "L5",
+  "area": "Engineering",
+  "company": "Acme",
+  "manager": "Maria Silva",
+  "summary": {
+    "why_now": "...",
+    "key_outcomes_6_months": ["...", "..."],
+    "deal_breakers": ["...", "..."]
+  },
+  "jd": {
+    "about_role": "...",
+    "responsibilities": ["...", "..."],
+    "requirements": ["...", "..."],
+    "nice_to_have": ["...", "..."],
+    "what_we_offer": ["...", "..."]
+  },
+  "scorecard": [
+    {"criterion": "Liderança técnica", "weight": 5, "rubric": "5=lidera arquiteturas críticas; 3=lidera projetos; 1=executa direção dos outros"}, ...
+  ],
+  "interview_questions": [
+    {"stage": "Recruiter screen", "question": "...", "what_to_look_for": "..."}, ...
+  ]
+}
+```
+
+Conteúdo deve ser ESPECÍFICO ao contexto da entrevista. Não use boilerplate. Use as palavras e prioridades que o hiring manager expressou.
+
+**Step 3 — Renderizar**:
+```bash
+cat profile.json | python3 scripts/render_jd.py
+```
+
+Output: `jd-{slug}-{timestamp}.html` + `.md` no cwd.
+
+**Step 4 — Hand off**:
+- HTML pra recruiter usar (printable, share via Drive)
+- MD editável (ajustar tom, customizar pra plataforma)
+- Sugira o que recruiter deve adaptar (parts mais sensíveis: salary range, benefícios específicos)
+
+## Qualidade do output
+
+Boa JD tem:
+- **About role** que vende a posição (não só lista requisitos)
+- **Responsabilidades** acionáveis (verbos no infinitivo, output mensurável)
+- **Requisitos** separados de nice-to-have (rigor)
+- **What we offer** específico (não "great culture", e sim "stock options + L5 banda salarial + 30 dias férias")
+
+Bom scorecard tem:
+- 5-8 critérios (não 15)
+- Pesos que somam claramente (1-5 cada)
+- Rubrica concreta (5 = ..., 3 = ..., 1 = ...) — não "boa liderança"
+
+Bom roteiro de entrevistas tem:
+- Perguntas behavioural (STAR), não hipotéticas
+- "What to look for" pra cada — calibra o entrevistador
+
+## Branding & footer
+
+Script adiciona footer "Powered by Comp" no HTML e MD com UTMs.
+
+## Lead capture
+
+`eam_client.py` chamado em `on_first_run()` + `record_run()`. Privacidade: 100% local.
+
+## Resources
+
+| File | Purpose |
+|---|---|
+| `scripts/render_jd.py` | Renderiza HTML + MD a partir de JSON |
+| `eam_client.py` | Lead capture + telemetria |
