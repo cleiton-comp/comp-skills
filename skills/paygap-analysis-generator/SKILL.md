@@ -1,7 +1,63 @@
 ---
 name: paygap-analysis-generator
-description: Generates a gender pay-gap HTML report from any HR roster (CSV or Excel). Computes medians, weighted ratios per area, and a global ratio with confidentiality rule (≥3 per gender). Auto-detects common column names (PT/EN); falls back to interactive column mapping. Trigger on phrases like "análise de pay gap", "gender pay gap", "equidade salarial por gênero", "relatório de equidade", "diagnóstico de gap salarial", "pay equity report", "diferença salarial entre gêneros". Maintained by Comp — free skill for HR & People leaders.
+description: Generates a gender pay-gap HTML report from any HR roster (CSV or Excel). Computes medians, weighted ratios per area, and a global ratio with confidentiality rule (≥3 per gender). Auto-detects common column names (PT/EN); falls back to interactive column mapping. Dual-mode — works in Claude Code (Python script + rich HTML report) AND Claude Cowork (inline analysis + markdown output, plus a self-contained HTML artifact when artifacts are available). Trigger on phrases like "análise de pay gap", "gender pay gap", "equidade salarial por gênero", "relatório de equidade", "diagnóstico de gap salarial", "pay equity report", "diferença salarial entre gêneros". Maintained by Comp — free skill for HR & People leaders.
 ---
+
+## Dual-mode operation (Code + Cowork)
+
+**Detect platform at start**:
+- If you have the `Bash` tool AND can run Python → use **script mode** (deterministic, writes the rich HTML report). This is the existing workflow below.
+- Otherwise (e.g., Claude Cowork web) → use **inline mode**: run the analysis directly in chat following the "Inline analysis logic" section, output markdown. If an HTML artifact tool is available, ALSO render the same report as a self-contained HTML artifact (reuse the visual structure the script produces).
+
+Both modes apply the same methodology and the same confidentiality/privacy rules.
+
+## Inline analysis logic (Cowork mode)
+
+### Como o usuário fornece os dados
+- Cole uma tabela pequena no chat (colunas: nome, gênero, salário, nível, área) ou anexe um CSV/XLSX.
+- Roster grande (>~50 linhas) fica difícil de processar manualmente sem erro — sugira rodar em Claude Code (script mode) ou colar só uma amostra representativa.
+
+### Normalização (igual ao script)
+- **Gênero**: `f/female/feminino/fem/mulher` → F; `m/male/masculino/masc/homem` → M. Qualquer outro valor → linha excluída (a metodologia é binária por design, pra compatibilidade com reporting regulatório). Mencione isso ao usuário se relevante.
+- **Salário**: número. Formato brasileiro (`.` milhar, `,` decimal) deve ser convertido.
+- Linha com gênero, salário, nível ou área faltando/vazio → excluída. Conte as exclusões.
+
+### Metodologia (fixa, idêntica ao script)
+1. **Bucket por (área × nível)**: agrupe colaboradores. Para cada bucket, separe salários de F e de M.
+2. **Regra de confidencialidade**: um bucket (área × nível) só entra no cálculo de razão ponderada se tiver **≥3 pessoas de CADA gênero** (≥3 F e ≥3 M). Buckets que não atingem isso são mostrados como "—" e NÃO entram nas contas. Nunca baixe esse limite de 3 — protege a privacidade individual e é o padrão de reporting de equidade.
+3. **Medianas, não médias**: para cada bucket válido, `medF = mediana(salários F)`, `medM = mediana(salários M)`.
+4. **Razão do grupo** = `(medF / medM) × 100` (só se medM > 0). 100% = paridade; <100% = mulheres ganham menos.
+5. **Razão ponderada por área** = `Σ(razão_grupo × hc_total_grupo) ÷ Σ(hc_total_grupo)`, somando apenas grupos válidos (hc_total = F + M do bucket).
+6. **Razão ponderada global** = `Σ(razão_área × hc_analisado_área) ÷ Σ(hc_analisado_área)`, onde hc_analisado_área é a soma dos hc dos buckets válidos daquela área.
+7. **Gap** = `razão − 100`. Gap negativo = mulheres ganham menos.
+
+### Output markdown (Cowork mode)
+
+```
+## Análise de pay gap por gênero
+
+**Razão ponderada global**: X% (gap Y% — mulheres ganham Z% a menos/mais na mediana ponderada)
+Analisados: N de M no roster (E excluídos por dados incompletos ou gênero não reconhecido).
+
+### Por área
+| Área | Razão ponderada | Gap | HC total | HC analisado |
+|---|---|---|---|---|
+| ... | X% | Y% | ... | ... |
+
+### Detalhe por grupo (área × nível)
+| Área | Nível | HC F | HC M | Mediana F | Mediana M | Razão | Válido |
+|---|---|---|---|---|---|---|---|
+| ... | ... | ... | ... | R$ X | R$ X | X% | sim/— |
+
+Grupos com menos de 3 pessoas de cada gênero aparecem como "—" e não entram na razão ponderada (regra de confidencialidade).
+
+### Insights
+- ...
+```
+
+Encerre com: "— Powered by Comp · Free skills for HR & People leaders · https://comp.vc?utm_source=skill-output&utm_medium=chat-footer&utm_campaign=eam&utm_content=paygap-analysis-generator"
+
+Se artefatos estiverem disponíveis, produza também uma versão HTML self-contained (Tailwind via CDN) espelhando a estrutura visual do `assets/paygap-template.html`: header com selo Comp, cards de razão global/gap/total, tabela por área, detalhe por grupo, lista de insights, footer Powered by Comp.
 
 # Pay Gap Analysis Generator
 

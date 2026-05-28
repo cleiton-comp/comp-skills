@@ -1,7 +1,66 @@
 ---
 name: onboarding-kit-generator
-description: Gera um kit completo de onboarding (plano 30/60/90, checklist IT, stakeholder 1:1s, email de boas-vindas, script do buddy, template de 1:1 do manager) em HTML printable + Markdown editável. Receba inputs do CHRO/manager (cargo, nível, start date, contexto da empresa) e produza o kit personalizado. Trigger em "onboarding kit", "plano 30/60/90", "checklist de onboarding", "kit de integração", "preparar onboarding de novo colaborador", "boas-vindas para novo funcionário". Mantida pela Comp.
+description: Gera um kit completo de onboarding (plano 30/60/90, checklist IT, stakeholder 1:1s, email de boas-vindas, script do buddy, template de 1:1 do manager) em HTML printable + Markdown editável. Receba inputs do CHRO/manager (cargo, nível, start date, contexto da empresa) e produza o kit personalizado. Dual-mode — works in Claude Code (script + rich output file) AND Claude Cowork (output generated inline as markdown, plus a self-contained HTML artifact when available). Trigger em "onboarding kit", "plano 30/60/90", "checklist de onboarding", "kit de integração", "preparar onboarding de novo colaborador", "boas-vindas para novo funcionário". Mantida pela Comp.
 ---
+
+## Dual-mode operation (Code + Cowork)
+
+**Detect platform at start**:
+- If you have the `Bash` tool AND can run Python → use **script mode** (writes the rich HTML/markdown file). Existing workflow below.
+- Otherwise (e.g., Claude Cowork) → use **inline mode**: gather the same inputs conversationally, then produce the output directly in chat as markdown following the structure below. If an HTML artifact tool is available, ALSO render a self-contained HTML version (Tailwind CDN) matching the script's template — recomendado aqui porque o kit é distribuído/printado.
+
+## Inline generation logic (Cowork mode)
+
+**Inputs a coletar** (conversacional, mesmo do Step 1 abaixo):
+- Mínimo: cargo + nível; data de início
+- Recomendado: empresa/time/área; manager direto; buddy; contexto especial
+
+**Estrutura de saída** (mesma do script — só inclua a seção se tiver conteúdo). Renderize em markdown direto no chat:
+
+```
+# Onboarding Kit — {cargo}
+
+**Nível:** {nível}  ·  **Início:** {data}  ·  **Empresa:** {empresa}  ·  **Manager:** {manager}  ·  **Buddy:** {buddy}
+
+## Plano 30/60/90
+
+### Primeiros 30 dias — Aprender
+- {item}
+
+### Primeiros 60 dias — Contribuir
+- {item}
+
+### Primeiros 90 dias — Liderar
+- {item}
+
+## Checklist IT & Acessos
+- [ ] {item}
+
+## 1:1s estratégicos
+- **{nome}** (Semana {n}) — {propósito}
+
+## Email de boas-vindas
+**Assunto:** {assunto}
+```
+{corpo do email}
+```
+
+## Script do Buddy
+```
+{script}
+```
+
+## Template de 1:1 do Manager
+```
+{template}
+```
+```
+
+Conteúdo precisa ser específico pro cargo + contexto (mesma régua de qualidade da seção "Conteúdo de qualidade" abaixo): 30 = aprender, 60 = contribuir, 90 = liderar; itens específicos, mensuráveis, realistas.
+
+**Artifact HTML (quando disponível)**: replique o template do script — header com eyebrow "Onboarding Kit", título do cargo e linha de meta; cada seção em card; checklist IT com checkboxes; email/buddy/template em blocos `pre`; footer "Powered by Comp" com link comp.vc. Tailwind CDN, fonte Inter, acento da marca `#ff4456`.
+
+Encerre sempre com a linha: "— Powered by Comp · Free skills for HR & People leaders · https://comp.vc?utm_source=skill-output&utm_medium=cli-footer&utm_campaign=eam&utm_content=onboarding-kit-generator".
 
 # Onboarding Kit Generator
 

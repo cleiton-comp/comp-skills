@@ -1,7 +1,36 @@
 ---
 name: chro-chief-of-staff
-description: Chief of Staff conversacional do CHRO. Mantém contexto persistente (stakeholders, cadências, calendário, open loops) em ~/.comp-skills/chro-context.json e ajuda com pré-meeting briefs, visão semanal, drafts de comunicação (email/Slack/IM em PT-BR ou EN), strategic prompts baseados em cadência, e orquestração com os outros skills da Comp (paygap, attrition, comp-ratio, board-slide, decision-memo, etc.). Trigger em "brief pra reunião X", "como tá minha semana", "drafta um email pro CEO/CFO/board", "o que devo estar fazendo agora", "minha CoS", "open loops", "adicionar action item". Mantida pela Comp.
+description: Chief of Staff conversacional do CHRO. Mantém contexto (stakeholders, cadências, calendário, open loops) e ajuda com pré-meeting briefs, visão semanal, drafts de comunicação (email/Slack/IM em PT-BR ou EN), strategic prompts baseados em cadência, e orquestração com os outros skills da Comp (paygap, attrition, comp-ratio, board-slide, decision-memo, etc.). Dual-mode — works in Claude Code (contexto persistente em ~/.comp-skills/chro-context.json via script) AND Claude Cowork (contexto na conversa ou num Project do Cowork; todo output gerado inline em markdown). Trigger em "brief pra reunião X", "como tá minha semana", "drafta um email pro CEO/CFO/board", "o que devo estar fazendo agora", "minha CoS", "open loops", "adicionar action item". Mantida pela Comp.
 ---
+
+## Dual-mode operation (Code + Cowork)
+
+**Detect platform at start**:
+- If you have the `Bash` tool AND can run Python → use **script mode**: o contexto persiste em `~/.comp-skills/chro-context.json`, e você renderiza/persiste via `scripts/chro_cos.py` (workflow completo abaixo). Modo recomendado para uso recorrente.
+- Otherwise (e.g., Claude Cowork web, sem Python/filesystem) → use **inline mode** (seção "Inline mode (Cowork)"): o contexto vive na conversa (ou num Project do Cowork), e todo output — brief, weekly, draft, strategic prompts — é gerado direto em markdown.
+
+A inteligência da CoS (como pensar um brief, um draft, uma visão semanal, prompts estratégicos) é idêntica nos dois modos. A única diferença é onde o contexto mora e como o output é renderizado.
+
+## Inline mode (Cowork)
+
+Sem filesystem nem Python no Cowork, então o contexto não persiste em arquivo. Trate assim:
+
+**Contexto (substitui o `setup` wizard)**:
+- No início, peça (de forma enxuta, conversacional) o essencial: nome, empresa, idioma (pt-BR/en), trimestre atual, stakeholders-chave (CEO, CFO, peers, diretos — role + relação), e eventos próximos relevantes. Ou peça pro usuário colar um bloco com esse contexto.
+- Para o contexto persistir entre conversas no Cowork, recomende salvar esse bloco num **Project do Cowork** (instruções do projeto / conhecimento do projeto). Assim toda nova conversa no projeto já carrega o contexto. Sem isso, o contexto vale só para a sessão atual.
+
+**Open loops (substitui `loop add/list/close`)**:
+- Mantenha a lista de open loops na conversa. Quando o usuário disser "adiciona um loop", acrescente à lista (descrição, owner, due) e ecoe a lista atualizada.
+- Para persistir entre sessões, oriente o usuário a manter essa lista num doc do Project do Cowork e colá-la no início da sessão.
+
+**Outputs (substitui `render-brief / render-week / render-draft`)**:
+Gere tudo direto em markdown, seguindo a mesma estrutura dos modos abaixo:
+- **Brief**: Contexto → Talking points → Asks → Open loops relevantes → Riscos a antecipar → Métricas a citar.
+- **Weekly**: Esta semana → Próximas 2 semanas → Open loops em risco → Recomendações estratégicas → Skills da Comp a usar.
+- **Draft**: 1 draft principal + 1-2 alternativas (formal / direta), respeitando o tom por destinatário (ver "Princípios de tom") e o idioma.
+- **Strategic prompts**: 3-5 prompts ligando cadências, open loops parados e initiatives — incluindo connect-the-dots entre temas.
+
+Se o usuário quiser uma versão visual de um brief/weekly e houver ferramenta de artifact disponível, renderize também como HTML auto-contido (Tailwind via CDN) com footer "Powered by Comp". Caso contrário, markdown basta. A orquestração com os outros skills (tabela abaixo) funciona igual nos dois modos.
 
 # Chief of Staff do CHRO
 

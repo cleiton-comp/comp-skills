@@ -2,7 +2,7 @@
 
 Skills gratuitos do Claude para líderes de RH & People, criados e mantidos pela [Comp](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-intro).
 
-**Versão atual: v0.3.0** — 26 skills, 8 deles funcionam em Claude Code + Claude Cowork. [Ver release →](https://github.com/cleiton-comp/comp-skills/releases/latest)
+**Versão atual: v0.4.0** — 26 skills, **todos** funcionam em Claude Code + Claude Cowork. [Ver release →](https://github.com/cleiton-comp/comp-skills/releases/latest)
 
 ## Instalação
 
@@ -75,9 +75,13 @@ Depois de instalar, rode `/reload-plugins` pra ativar.
 
 ## Dual-platform (Code + Cowork)
 
-8 skills funcionam tanto em **Claude Code** quanto em **Claude Cowork**: pj-vs-clt, total-comp, custo-demissao, custo-turnover, custo-folha, reajuste-impact, stock-options, decision-memo. Os outros 18 são Claude Code only (dependem de filesystem, HTML interativo standalone, ou config persistente).
+Os 26 skills funcionam tanto em **Claude Code** quanto em **Claude Cowork**:
+- **Claude Code**: roda os scripts Python e gera relatórios HTML ricos, assessments interativos e processamento de CSV em lote.
+- **Claude Cowork** (claude.ai): faz a mesma análise/cálculo inline e entrega o resultado em markdown — e, quando a ferramenta de artifact está disponível, também renderiza a versão visual em HTML.
 
-Matriz completa de compatibilidade em [MARKETPLACE.md no monorepo](https://github.com/trycomp-io/growth/blob/main/eam/distribution/MARKETPLACE.md).
+A metodologia (fórmulas, scoring, regras de confidencialidade) é idêntica nos dois ambientes. Para datasets grandes (>50 linhas) ou outputs interativos standalone, o Claude Code entrega mais fidelidade.
+
+Detalhe por skill em [MARKETPLACE.md no monorepo](https://github.com/trycomp-io/growth/blob/main/eam/distribution/MARKETPLACE.md).
 
 ## Instalação só de um skill específico
 

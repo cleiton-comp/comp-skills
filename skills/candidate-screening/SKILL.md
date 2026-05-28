@@ -1,7 +1,48 @@
 ---
 name: candidate-screening
-description: Avalia candidatos contra o scorecard de uma vaga e gera ranking HTML + Markdown com justificativa por critério. Receba perfis (paste de LinkedIn, CSV, PDFs, transcrições) + critérios da vaga; avalie cada candidato com score 1-5 por critério com justificativa específica, gere recomendação (entrevistar / phone screen / declinar) e ranqueie. Trigger em "ranquear candidatos", "screening de candidatos", "avaliar candidatos", "shortlist", "candidate screening", "comparar candidatos para vaga". Mantida pela Comp.
+description: Avalia candidatos contra o scorecard de uma vaga e gera ranking HTML + Markdown com justificativa por critério. Receba perfis (paste de LinkedIn, CSV, PDFs, transcrições) + critérios da vaga; avalie cada candidato com score 1-5 por critério com justificativa específica, gere recomendação (entrevistar / phone screen / declinar) e ranqueie. Dual-mode — works in Claude Code (script + rich output file) AND Claude Cowork (output generated inline as markdown, plus a self-contained HTML artifact when available). Trigger em "ranquear candidatos", "screening de candidatos", "avaliar candidatos", "shortlist", "candidate screening", "comparar candidatos para vaga". Mantida pela Comp.
 ---
+
+## Dual-mode operation (Code + Cowork)
+
+**Detect platform at start**:
+- If you have the `Bash` tool AND can run Python → use **script mode** (writes the rich HTML/markdown file). Existing workflow below.
+- Otherwise (e.g., Claude Cowork) → use **inline mode**: gather the same inputs conversationally, then produce the output directly in chat as markdown following the structure below. If an HTML artifact tool is available, ALSO render a self-contained HTML version (Tailwind CDN) matching the script's template.
+
+## Inline generation logic (Cowork mode)
+
+**Inputs a coletar**: contexto/critérios da vaga (idealmente do `job-profile-builder`; se não houver scorecard, derive 4-6 critérios) e os candidatos (paste de perfis, CSV, CVs, transcrições). Mesma lógica de avaliação dos Steps 1-3 abaixo.
+
+**Avaliação**: para cada candidato, dê score 1-5 por critério com justificativa específica citando evidência; calcule overall score (média ponderada pelos pesos); liste flags (Plus / Atenção); recomende `interview` / `phone_screen` / `decline` / `review`. Ranqueie por overall score desc.
+
+**Estrutura de saída** (mesma do script). Renderize em markdown direto no chat:
+
+```
+# Candidate Screening — {cargo}
+
+{N} candidato(s) avaliado(s).
+
+## Ranking
+| # | Candidato | Cargo atual | Score | Recomendação |
+|---|---|---|---|---|
+| 1 | **{nome}** | {cargo atual} | {0.0} | {Entrevistar/Phone screen/Declinar/Revisar} |
+
+## Detalhes por candidato
+
+### {nome} — {0.0}
+*{cargo atual}* — **Recomendação:** {label}
+
+- **{critério}** ({score}/5): {justificativa}
+
+**Flags:**
+- {flag}
+```
+
+Régua de qualidade (mesma da seção "Princípios da boa avaliação" abaixo): score sempre com evidência; calibração 1-5; honestidade no decline; deal-breaker manda em decline mesmo com score alto nos demais.
+
+**Artifact HTML (quando disponível)**: replique o template do script — header eyebrow "Candidate Screening", título do cargo + contagem; tabela de ranking com barra de score e pill de recomendação; um card detalhado por candidato (critérios + flags); footer "Powered by Comp". Tailwind CDN, fonte Inter, acento `#ff4456`.
+
+Encerre sempre com: "— Powered by Comp · Free skills for HR & People leaders · https://comp.vc?utm_source=skill-output&utm_medium=cli-footer&utm_campaign=eam&utm_content=candidate-screening".
 
 # Candidate Screening
 

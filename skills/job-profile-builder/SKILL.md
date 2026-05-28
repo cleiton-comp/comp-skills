@@ -1,7 +1,61 @@
 ---
 name: job-profile-builder
-description: Conduz uma entrevista estruturada com o hiring manager (10-15 perguntas) e gera um Job Profile completo — Resumo executivo (por que agora, outcomes, deal-breakers), JD (sobre a vaga, responsabilidades, requisitos, nice-to-have, oferta), Scorecard de avaliação ponderado, e Roteiro de Entrevistas com perguntas por estágio e o que procurar. Output em HTML printable + Markdown editável. Trigger em "criar JD", "job description", "perfil da vaga", "abrir vaga de [cargo]", "entrevistar hiring manager", "job profile", "scorecard de entrevista". Mantida pela Comp.
+description: Conduz uma entrevista estruturada com o hiring manager (10-15 perguntas) e gera um Job Profile completo — Resumo executivo (por que agora, outcomes, deal-breakers), JD (sobre a vaga, responsabilidades, requisitos, nice-to-have, oferta), Scorecard de avaliação ponderado, e Roteiro de Entrevistas com perguntas por estágio e o que procurar. Output em HTML printable + Markdown editável. Dual-mode — works in Claude Code (script + rich output file) AND Claude Cowork (output generated inline as markdown, plus a self-contained HTML artifact when available). Trigger em "criar JD", "job description", "perfil da vaga", "abrir vaga de [cargo]", "entrevistar hiring manager", "job profile", "scorecard de entrevista". Mantida pela Comp.
 ---
+
+## Dual-mode operation (Code + Cowork)
+
+**Detect platform at start**:
+- If you have the `Bash` tool AND can run Python → use **script mode** (writes the rich HTML/markdown file). Existing workflow below.
+- Otherwise (e.g., Claude Cowork) → use **inline mode**: gather the same inputs conversationally, then produce the output directly in chat as markdown following the structure below. If an HTML artifact tool is available, ALSO render a self-contained HTML version (Tailwind CDN) matching the script's template.
+
+## Inline generation logic (Cowork mode)
+
+**Inputs a coletar**: conduza a mesma entrevista estruturada em blocos do Step 1 abaixo (contexto da posição, outcomes esperados, filtros/diferenciais, processo). Não pergunte tudo de uma vez.
+
+**Estrutura de saída** (mesma do script — só inclua a seção se tiver conteúdo). Renderize em markdown direto no chat:
+
+```
+# Job Profile — {cargo}
+
+**Nível:** {nível}  ·  **Área:** {área}  ·  **Empresa:** {empresa}  ·  **Hiring Manager:** {manager}
+
+## Resumo executivo
+**Por que agora:** {why_now}
+
+**Outcomes em 6 meses:**
+- {outcome}
+
+**Deal-breakers:**
+- {deal_breaker}
+
+## Job Description
+{about_role}
+
+### Responsabilidades
+- {item}
+### Requisitos
+- {item}
+### Diferenciais
+- {item}
+### O que oferecemos
+- {item}
+
+## Scorecard
+| Critério | Peso | Rubrica |
+|---|---|---|
+| {critério} | {1-5} | 5=...; 3=...; 1=... |
+
+## Roteiro de entrevistas
+- **{estágio}** — {pergunta}
+  - *O que procurar:* {what_to_look_for}
+```
+
+Conteúdo deve ser específico ao que o hiring manager expressou (mesma régua de qualidade da seção "Qualidade do output" abaixo): JD que vende a vaga, responsabilidades acionáveis, scorecard com 5-8 critérios e rubrica concreta, perguntas behavioural (STAR).
+
+**Artifact HTML (quando disponível)**: replique o template do script — header com eyebrow "Job Profile", título do cargo e meta; cards de Resumo executivo, Job Description, Scorecard (linha por critério com pill de peso) e Roteiro de entrevistas (pill de estágio por pergunta); footer "Powered by Comp". Tailwind CDN, fonte Inter, acento `#ff4456`.
+
+Encerre sempre com: "— Powered by Comp · Free skills for HR & People leaders · https://comp.vc?utm_source=skill-output&utm_medium=cli-footer&utm_campaign=eam&utm_content=job-profile-builder".
 
 # Job Profile Builder
 

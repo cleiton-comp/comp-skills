@@ -1,7 +1,80 @@
 ---
 name: comp-level-simulator
-description: Generates a self-contained interactive HTML simulator for evaluating job levels (L1–L6) using the Comp methodology — 4 pillars (Influence, Autonomy, Complexity, Responsibility), 8 questions, A–E scale. Use for standardizing leveling across the org, removing subjectivity from grade decisions, or giving managers a self-service tool. Trigger on phrases like "avaliar nível de cargo", "como nivelar uma posição", "framework de leveling", "simulador de level", "simulador de CGL", "calculadora de nível", "padronizar avaliação de níveis", "ferramenta de leveling". Maintained by Comp — free skill for HR & People leaders.
+description: Generates a self-contained interactive HTML simulator for evaluating job levels (L1–L6) using the Comp methodology — 4 pillars (Influence, Autonomy, Complexity, Responsibility), 8 questions, A–E scale. Use for standardizing leveling across the org, removing subjectivity from grade decisions, or giving managers a self-service tool. Dual-mode — works in Claude Code (interactive HTML assessment via script) AND Claude Cowork (conversational assessment + markdown scorecard, plus a self-contained HTML artifact when available). Trigger on phrases like "avaliar nível de cargo", "como nivelar uma posição", "framework de leveling", "simulador de level", "simulador de CGL", "calculadora de nível", "padronizar avaliação de níveis", "ferramenta de leveling". Maintained by Comp — free skill for HR & People leaders.
 ---
+
+## Dual-mode operation (Code + Cowork)
+
+**Detect platform at start**:
+- If you have the `Bash` tool AND can run Python → use **script mode** (generates the interactive standalone HTML). Existing workflow below.
+- Otherwise (e.g., Claude Cowork) → use **inline mode**: conduct the assessment conversationally per the "Inline assessment logic" section, compute the score in chat, present a markdown scorecard. If an HTML artifact tool is available, ALSO render a self-contained HTML result (Tailwind CDN) matching the script's output.
+
+## Inline assessment logic (Cowork mode)
+
+Avalie 1 cargo por vez. 4 pilares, 2 perguntas cada (8 perguntas). Cada pergunta usa a mesma escala A–E.
+
+**Escala por pergunta** (mesma pra todas):
+
+| Opção | Score | Significado |
+|---|---|---|
+| A | 5 | Sempre / 100% / Grande escala |
+| B | 4 | Frequentemente / ~75% / Escala moderada |
+| C | 3 | Ocasionalmente / ~50% / Pequena escala |
+| D | 2 | Raramente / ~25% / Muito pouco |
+| E | 1 | Nunca / 0% / Não se aplica |
+
+**Pilares e perguntas** (texto exato):
+
+1. Influência — impacto nas decisões e estratégias
+   - Q1: O trabalho do indivíduo impacta as decisões e estratégias em toda a empresa?
+   - Q2: O indivíduo pode iniciar e liderar mudanças em todo o departamento sem aprovação prévia?
+2. Autonomia — capacidade de agir sem supervisão
+   - Q3: O indivíduo trabalha sem supervisão?
+   - Q4: O indivíduo pode definir suas próprias metas e prazos?
+3. Complexidade — análise e resolução de problemas
+   - Q5: O trabalho do indivíduo envolve lidar com projetos interdepartamentais?
+   - Q6: O indivíduo é responsável por resolver problemas complexos que afetam os resultados do negócio?
+4. Responsabilidade — obrigações por pessoas, resultados e recursos
+   - Q7: O indivíduo é responsável por gerenciar um orçamento ou recursos?
+   - Q8: O papel do indivíduo envolve liderar equipes ou projetos?
+
+**Scoring**: some os 8 scores (faixa total 8–40). Faixas de nível (mesmas thresholds do script):
+
+| Score total | Level | Título (IC / MGMT) |
+|---|---|---|
+| ≥ 39 | L6 | Especialista III / Gerente Sênior |
+| ≥ 36 | L5 | Especialista II / Gerente |
+| ≥ 32 | L4 | Especialista I / Coordenador |
+| ≥ 24 | L3 | Sênior / Supervisor |
+| ≥ 16 | L2 | Pleno |
+| ≥ 8 | L1 | Júnior |
+
+L1–L4 sobem linearmente (25% cada no range); L5 e L6 ficam comprimidos no topo — níveis executivos exigem scores consistentemente altos em todos os pilares.
+
+**Barra de progresso**: `percentage = ((score - 8) / (40 - 8)) × 100` (clamp 0–100%).
+
+**Como conduzir**: faça as perguntas de 1 pilar por vez (2 perguntas), de forma conversacional, pedindo a letra A–E. Não despeje as 8 de uma vez. Ao final, some, classifique e apresente o scorecard.
+
+**Scorecard markdown (Cowork mode)**:
+
+```
+## Resultado de Leveling — [cargo/posição]
+
+**Nível calculado: LX** — [título IC / MGMT]
+Score total: XX/40 ([percentage]% no range)
+
+| Pilar | Q | Score |
+|---|---|---|
+| Influência | Q1 / Q2 | x / x |
+| Autonomia | Q3 / Q4 | x / x |
+| Complexidade | Q5 / Q6 | x / x |
+| Responsabilidade | Q7 / Q8 | x / x |
+| **Total** | | **XX/40** |
+
+Leitura: [1-2 frases sobre o que o nível significa e os pilares mais fortes/fracos].
+```
+
+Se houver ferramenta de artifact HTML, renderize também o resultado em HTML auto-contido (Tailwind CDN) espelhando o output do script: nível em destaque, título, barra de progresso e breakdown por pilar. Encerre com a linha "Powered by Comp · Free skills for HR & People leaders · https://comp.vc?utm_source=skill-output&utm_medium=cowork-footer&utm_campaign=eam&utm_content=comp-level-simulator".
 
 # Comp Level Simulator
 
