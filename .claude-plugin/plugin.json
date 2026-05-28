@@ -1,7 +1,7 @@
 {
   "name": "comp-skills",
-  "description": "Free Claude skills for HR & People leaders — built and maintained by Comp. 25 skills covering calculators (CLT/PJ, custo demissão, custo turnover, custo folha, reajuste, stock options), HTML assessments (maturity, AI readiness, org design, leveling), CSV analyzers (paygap, regretted attrition, comp ratio, promotion equity, engagement, span of control), conversational generators (onboarding kit, JD, candidate screening, decision memo, CEO update, board slide, comp budget defense) and a CHRO Chief of Staff orchestrator. 7 of the calculators+generator are dual-platform (Code + Cowork). Others are Claude Code only.",
-  "version": "0.2.0",
+  "description": "Free Claude skills for HR & People leaders — built and maintained by Comp. 26 skills covering calculators (CLT/PJ, total comp, custo demissão, custo turnover, custo folha, reajuste, stock options), HTML assessments (maturity, AI readiness, org design, leveling), CSV analyzers (paygap, regretted attrition, comp ratio, promotion equity, engagement, span of control), conversational generators (onboarding kit, JD, candidate screening, decision memo, CEO update, board slide, comp budget defense) and a CHRO Chief of Staff orchestrator. 8 of the calculators+generator are dual-platform (Code + Cowork). Others are Claude Code only.",
+  "version": "0.3.0",
   "author": {
     "name": "Comp",
     "url": "https://comp.vc?utm_source=claude-marketplace&utm_medium=plugin-manifest&utm_campaign=eam&utm_content=plugin-author-url"

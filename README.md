@@ -2,7 +2,7 @@
 
 Skills gratuitos do Claude para líderes de RH & People, criados e mantidos pela [Comp](https://comp.vc?utm_source=github&utm_medium=readme&utm_campaign=eam&utm_content=mirror-readme-intro).
 
-**Versão atual: v0.2.0** — 25 skills, 7 deles funcionam em Claude Code + Claude Cowork. [Ver release →](https://github.com/cleiton-comp/comp-skills/releases/latest)
+**Versão atual: v0.3.0** — 26 skills, 8 deles funcionam em Claude Code + Claude Cowork. [Ver release →](https://github.com/cleiton-comp/comp-skills/releases/latest)
 
 ## Instalação
 
@@ -11,17 +11,18 @@ Skills gratuitos do Claude para líderes de RH & People, criados e mantidos pela
 /plugin install comp-skills@comp
 ```
 
-Instala os 25 skills de uma vez. Eles são model-invoked — basta descrever o que você quer e o Claude escolhe o skill certo (ex: "analisa o pay gap dessa planilha" → `paygap-analysis-generator`).
+Instala os 26 skills de uma vez. Eles são model-invoked — basta descrever o que você quer e o Claude escolhe o skill certo (ex: "analisa o pay gap dessa planilha" → `paygap-analysis-generator`).
 
 Depois de instalar, rode `/reload-plugins` pra ativar.
 
-## O que tem aqui (25 skills)
+## O que tem aqui (26 skills)
 
-### Calculadoras BR (6)
+### Calculadoras (7)
 
 | Skill | O que faz | Dual-platform |
 |---|---|---|
 | [pj-vs-clt-calculator](skills/pj-vs-clt-calculator/) | Equivalência salarial CLT ↔ PJ com cálculo fiscal completo (INSS, IRPF, FGTS, 13º, férias, benefícios). Single ou batch via CSV. | ✅ |
+| [total-comp-calculator](skills/total-comp-calculator/) | Pacote completo de Total Compensation: cash (base + variável) + benefícios + equity (SOP/ILP com cenários). 2 headlines + visão visual. | ✅ |
 | [custo-demissao-calculator](skills/custo-demissao-calculator/) | Custo de rescisão CLT decomposto (saldo, aviso, 13º, férias, FGTS, INSS, IRPF) nos 4 tipos de demissão. | ✅ |
 | [custo-turnover-calculator](skills/custo-turnover-calculator/) | Custo real (oculto) de turnover em 8 componentes. Quick mode (multiplicadores) ou detailed. Baseado no artigo Cajuína. | ✅ |
 | [custo-folha-simulator](skills/custo-folha-simulator/) | Custo total empregador (salários + encargos + provisões). Estimate ou CSV roster. | ✅ |
@@ -70,11 +71,11 @@ Depois de instalar, rode `/reload-plugins` pra ativar.
 
 | Skill | O que faz |
 |---|---|
-| [chro-chief-of-staff](skills/chro-chief-of-staff/) | Chief of Staff conversacional do CHRO. Contexto persistente, pré-meeting briefs, drafts de comunicação, open loops tracker. Orquestra os outros 24 skills. |
+| [chro-chief-of-staff](skills/chro-chief-of-staff/) | Chief of Staff conversacional do CHRO. Contexto persistente, pré-meeting briefs, drafts de comunicação, open loops tracker. Orquestra os outros 25 skills. |
 
 ## Dual-platform (Code + Cowork)
 
-7 skills funcionam tanto em **Claude Code** quanto em **Claude Cowork**: pj-vs-clt, custo-demissao, custo-turnover, custo-folha, reajuste-impact, stock-options, decision-memo. Os outros 18 são Claude Code only (dependem de filesystem, HTML interativo standalone, ou config persistente).
+8 skills funcionam tanto em **Claude Code** quanto em **Claude Cowork**: pj-vs-clt, total-comp, custo-demissao, custo-turnover, custo-folha, reajuste-impact, stock-options, decision-memo. Os outros 18 são Claude Code only (dependem de filesystem, HTML interativo standalone, ou config persistente).
 
 Matriz completa de compatibilidade em [MARKETPLACE.md no monorepo](https://github.com/trycomp-io/growth/blob/main/eam/distribution/MARKETPLACE.md).
 
